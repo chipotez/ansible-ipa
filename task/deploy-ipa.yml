@@ -5,7 +5,7 @@
 #########################################
 
 - name: Instalacion de Servidor IPA
-  hosts: ipa_server_master
+  hosts: Masters
   gather_facts: True
   vars_files:
      - ../var/main.yaml
