@@ -1,0 +1,42 @@
+#########################################
+#                                       #
+# Instalacion y configuración Server IPA#
+#                                       #
+#########################################
+
+- name: Instalacion de Servidor IPA
+  hosts: ipa_server_group
+  gather_facts: True
+  vars_files:
+     - ../var/main.yaml
+  vars_prompt:
+     - name: "real_password"
+       prompt: "Enter admin password"
+       private: yes
+     - name: "domain_password"
+       prompt: "Enter manager password"
+       private: yes
+  remote_user: root
+  tasks:
+     - name: Configurando nombre de Servidor IPA
+       hostname:
+         name: "{{ ansible_hostname }}.{{ domain }}" 
+     - name: Add IP address of all hosts to all hosts
+       lineinfile:
+          dest: /etc/hosts
+          line: "{{ ansible_eth0.ipv4.address }} {{ ansible_hostname }}.{{ domain }} {{ ansible_hostname }}"
+          state: present
+     - name: Instalando Paquetes necesarios de Servidor IPA.
+       yum: name={{ item }} state=present
+       with_items:
+               - ipa-server
+               - bind-dyndb-ldap
+               - ipa-server-dns
+     - name: Reiniciando servicio  firewalld
+       command: systemctl stop firewalld.service
+
+     - name: Reiniciando servicio  firewalld
+       command: systemctl disable firewalld.service
+
+     - name: Run the ipa-server-install command
+       command: 'ipa-server-install --ip-address={{ ansible_default_ipv4.address }} -r {{ realm }} -n {{ domain }} -p {{ real_password }} -a {{ domain_password }} --allow-zone-overlap --no-host-dns --mkhomedir --setup-dns --auto-forwarders --hostname={{ ansible_hostname }}.{{ domain }} --subject="O={{ realm }} {{ ansible_date_time.year }}{{ ansible_date_time.month }}{{ ansible_date_time.day }}{{ansible_date_time.hour }}{{ ansible_date_time.minute }}" --reverse-zone=0.168.192.in-addr.arpa. -U'
