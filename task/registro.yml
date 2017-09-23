@@ -33,3 +33,12 @@
       async: 1
       poll: 0
       ignore_errors: true
+      
+    - name: Esperando conexión con servidor.
+      local_action: wait_for
+      args:
+        host: "{{ inventory_hostname }}"
+        port: 22
+        state: started
+        delay: 30
+        timeout: 60
