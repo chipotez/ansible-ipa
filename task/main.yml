@@ -5,7 +5,7 @@
 #########################################
 
 - name: Instalacion de Servidor IPA
-  hosts: ipa_server_group
+  hosts: Master
   gather_facts: True
 #######################################################
 #                                                     #
