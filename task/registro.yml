@@ -1,0 +1,35 @@
+---
+- hosts: tower
+  remote_user: root
+  vars:
+    - rhn_username: user-rhn
+    - rhn_pass: "password-rhn"
+    - hostname_full: host-id-rhn
+  tasks:
+    - name: Registrando Sistema en Portal de Red Hat.
+      redhat_subscription:
+          state: present
+          username: " {{ rhn_username }} " 
+          password: "{{ rhn_pass }}"
+          consumer_name: "{{ hostname_full }}"
+          autosubscribe: true
+          force_register: yes
+          
+    - name: Habilitando canales necesarios.
+      shell: |
+        subscription-manager repos --disable=*
+        subscription-manager repos --enable rhel-7-server-rpms --enable rhel-7-server-extras-rpms --enable rhel-7-server-optional-rpms
+        
+    - name: Actualizando Sistema Operativo
+      yum:
+        name: '*'
+        state: latest
+        
+    - name: "Limpiando metadata de los repositorios."
+      command: "yum clean all"
+
+    - name: Reiniciando nodo
+      shell: sleep 2 && shutdown -r now "Ansible reboot"
+      async: 1
+      poll: 0
+      ignore_errors: true
