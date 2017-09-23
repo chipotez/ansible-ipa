@@ -8,7 +8,7 @@
   hosts: Masters
   gather_facts: True
   vars_files:
-     - /var/main.yml
+     - ../var/main.yml
 # vars_prompt:
 #     - name: "real_password"
 #       prompt: "Enter admin password"
