@@ -1,6 +1,12 @@
+#########################################
+#                                       #
+# Instalacion y configuración Server IPA#
+#                                       #
+#########################################
 
-
-
+- name: Instalacion de Servidor IPA
+  hosts: ipa_server_group
+  gather_facts: True
 #######################################################
 #                                                     #
 # Creando Servidor IPA  GCP                           #
@@ -17,14 +23,5 @@
 ######################################################
 
 - name: Instalacion de Servidor IPA
-  include: ipa-server/deploy-ipa-server-2.yaml
-  ignore_errors: True
-######################################################
-#                                                    #
-# Enviando Notificaciones a los usuarios             #
-#                                                    #
-######################################################
-
-- name: Instalacion de Servidor IPA
-  include: tareas/notificacion-usuario.yaml
+  include: deploy-ipa.yml
   ignore_errors: True
