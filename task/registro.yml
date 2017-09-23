@@ -1,5 +1,5 @@
 ---
-- hosts: tower
+- hosts: Masters
   remote_user: root
   vars:
     - rhn_username: user-rhn
