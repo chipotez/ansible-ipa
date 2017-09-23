@@ -6,6 +6,17 @@
     - rhn_pass: "password-rhn"
     - hostname_full: host-id-rhn
   tasks:
+
+    - name: Configurando nombre de Servidor IPA
+      hostname:
+        name: "{{ hostname_full }}" 
+         
+    - name: Add IP address of all hosts to all hosts
+      lineinfile:
+         dest: /etc/hosts
+         line: "{{ ansible_eth0.ipv4.address }} {{ hostname_full }}"
+         state: present
+
     - name: Registrando Sistema en Portal de Red Hat.
       redhat_subscription:
           state: present
