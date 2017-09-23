@@ -8,7 +8,7 @@
   hosts: Masters
   gather_facts: True
   vars_files:
-     - ../var/main.yaml
+     - /var/main.yaml
 # vars_prompt:
 #     - name: "real_password"
 #       prompt: "Enter admin password"
@@ -17,17 +17,7 @@
 #       prompt: "Enter manager password"
 #       private: yes
 #  remote_user: root
-  tasks:
-     - name: Configurando nombre de Servidor IPA
-       hostname:
-         name: "{{ ansible_hostname }}.{{ domain }}" 
-         
-     - name: Add IP address of all hosts to all hosts
-       lineinfile:
-          dest: /etc/hosts
-          line: "{{ ansible_eth0.ipv4.address }} {{ ansible_hostname }}.{{ domain }} {{ ansible_hostname }}"
-          state: present
-          
+  tasks:       
      - name: Instalando Paquetes necesarios de Servidor IPA.
        yum: name={{ item }} state=present
        with_items:
@@ -36,7 +26,7 @@
                - ipa-server-dns
              
      - name: Run the ipa-server-install command
-       command: 'ipa-server-install --ip-address={{ ansible_default_ipv4.address }} -r {{ realm }} -n {{ domain }} -p {{ real_password }} -a {{ domain_password }} --allow-zone-overlap --no-host-dns --mkhomedir --setup-dns --auto-forwarders --hostname={{ ansible_hostname }}.{{ domain }} --subject="O={{ realm }} {{ ansible_date_time.year }}{{ ansible_date_time.month }}{{ ansible_date_time.day }}{{ansible_date_time.hour }}{{ ansible_date_time.minute }}" --reverse-zone=0.168.192.in-addr.arpa. -U'
+       command: 'ipa-server-install --ip-address={{ ansible_default_ipv4.address }} -r {{ realm }} -n {{ domain }} -p {{ real_password }} -a {{ domain_password }} --allow-zone-overlap --no-host-dns --mkhomedir --setup-dns --auto-forwarders --hostname={{ hostname_full }} --reverse-zone=0.168.192.in-addr.arpa. -U'
      
      - name: Reiniciando servicio  firewalld
        command: firewall-cmd --permanent --add-service={ntp,http,https,ldap,ldaps,kerberos,kpasswd,dns}
