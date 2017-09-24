@@ -28,4 +28,3 @@ ipaserver_ui_redirect: True
 ipaserver_reverse: 0.168.192.in-addr.arpa.
 ipaserver_subject: "O={{ ipaserver_realm }}{{ ansible_date_time.year }}{{ ansible_date_time.month }}{{ ansible_date_time.day }}{{ansible_date_time.hour }}{{ ansible_date_time.minute }}"
 #ipaserver_ca_subject: "{{ ansible_hostname }}{{ ansible_date_time.year }}{{ ansible_date_time.month }}{{ ansible_date_time.day }}{{ansible_date_time.hour }}{{ ansible_date_time.minute }}"
-ipaserver_id: "ip  a s eth0 | grep "inet " | awk -F '\\.' '{print $7}' |awk -F '\\ ' '{print $1}'"
