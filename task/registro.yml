@@ -10,7 +10,7 @@
 
     - name: Configurando nombre de Servidor IPA
       hostname:
-        name: "{{ rhn_username }}{{ ipaserver_id }}{{ domain }}"
+        name: "{{ hostname_s }}{{ ipaserver_id }}{{ domain }}"
       register: hostname_full         
     - name: Add IP address of all hosts to all hosts
       lineinfile:
