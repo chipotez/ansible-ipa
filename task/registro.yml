@@ -15,13 +15,13 @@
 
     - name: Configurando nombre de Servidor IPA
       hostname:
-        name: "{{ hostname_s }}{{ ipaserver_id.stdout }}{{ ipaserver_id }}"
+        name: "{{ hostname_s }}{{ ipaserver_id.stdout }}{{ domain_s }}"
       register: hostname_full
       
     - name: Add IP address of all hosts to all hosts
       lineinfile:
          dest: /etc/hosts
-         line: "{{ ansible_eth0.ipv4.address }} {{ hostname_full }}"
+         line: "{{ ansible_eth0.ipv4.address }} {{ hostname_full.stdout }}"
          state: present
 
     - name: Registrando Sistema en Portal de Red Hat.
@@ -29,7 +29,7 @@
           state: present
           username: " {{ rhn_username }} " 
           password: "{{ rhn_pass }}"
-          consumer_name: "{{ hostname_full }}"
+          consumer_name: "{{ hostname_full.stdout }}"
           autosubscribe: true
           force_register: yes
           
