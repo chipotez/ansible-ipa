@@ -23,7 +23,7 @@
     - name: Add IP address of all hosts to all hosts
       lineinfile:
          dest: /etc/hosts
-         line: "{{ ansible_eth0.ipv4.address }} {{ hostname_full.stdout }}"
+         line: "{{ ansible_eth0.ipv4.address }} {{ hostname_full.name }}"
          state: present
 
     - name: Registrando Sistema en Portal de Red Hat.
@@ -31,7 +31,7 @@
           state: present
           username: " {{ rhn_username }} " 
           password: "{{ rhn_pass }}"
-          consumer_name: "{{ hostname_full.stdout }}"
+          consumer_name: "{{ hostname_full.name }}"
           autosubscribe: true
           force_register: yes
           
