@@ -12,7 +12,7 @@
 
     - name: Configurando nombre de Servidor IPA
       hostname:
-        name: "{{ hostname_s }}{{ ipaserver_id }}{{ domain_s }}"
+        name: "{{ hostname_s }}{{ ipaserver_id }}"
       register: hostname_full
       
     - name: Add IP address of all hosts to all hosts
