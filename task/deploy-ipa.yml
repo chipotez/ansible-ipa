@@ -28,9 +28,21 @@
      - name: Configurando IPA Server.
        command: "ipa-server-install --ip-address={{ ansible_default_ipv4.address }} -r {{ ipaserver_realm }} -n {{ ipaserver_domain }} -p {{ ipaserver_dir_admin_password }} -a {{ ipaserver_admin_password }} --allow-zone-overlap --no-host-dns --mkhomedir --setup-dns --auto-forwarders --hostname={{ hostname_full }} --reverse-zone=0.168.192.in-addr.arpa. -U"
        
-     - name: Agregando servicios al Firewall
-       command: firewall-cmd --permanent --add-service={ntp,http,https,ldap,ldaps,kerberos,kpasswd,dns}
-       
+     - name: Habilitando puertos en Firewall
+       firewalld: port={{ item }} permanent=true state=enabled
+       with_items:
+         - 80/tcp
+         - 443/tcp
+         - 389/tcp
+         - 636/tcp
+         - 88/tcp
+         - 464/tcp
+         - 88/udp
+         - 464/udp
+         - 53/tcp
+         - 53/udp
+         - 123/udp
+
      - name: Reiniciando servicio  firewall
        command: firewall-cmd --reload
        
