@@ -2,18 +2,17 @@
 - hosts: Masters
   remote_user: root
   vars:
-    - rhn_username: user-rhn
-    - rhn_pass: "password-rhn"
-    - hostname_s: "nombre"
-    - domain: ".themike.systems"
+    #- rhn_username: user-rhn
+    #- rhn_pass: "password-rhn"
+    #- hostname_s:
+    - domain_s: .themike.systems
   tasks:
-    - shell: |
-        ip  a s eth0 | grep "inet " | awk -F '\\.' '{print $7}' |awk -F '\\ ' '{print $1}'
+    - shell: ip  a s eth0 | grep "inet " | awk -F '\\.' '{print $7}' |awk -F '\\ ' '{print $1}'
       register: ipaserver_id
 
     - name: Configurando nombre de Servidor IPA
       hostname:
-        name: "{{ hostname_s }}{{ ipaserver_id }}{{ domain }}"
+        name: "{{ hostname_s }}{{ ipaserver_id }}{{ domain_s }}"
       register: hostname_full
       
     - name: Add IP address of all hosts to all hosts
