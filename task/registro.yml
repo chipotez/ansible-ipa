@@ -4,13 +4,14 @@
   vars:
     - rhn_username: user-rhn
     - rhn_pass: "password-rhn"
-    - hostname_full: host-id-rhn
+    - hostname_s: "nombre"
+    - domain: ".themike.systems"
   tasks:
 
     - name: Configurando nombre de Servidor IPA
       hostname:
-        name: "{{ hostname_full }}" 
-         
+        name: "{{ rhn_username }}{{ ipaserver_id }}{{ domain }}"
+      register: hostname_full         
     - name: Add IP address of all hosts to all hosts
       lineinfile:
          dest: /etc/hosts
