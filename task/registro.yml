@@ -9,6 +9,8 @@
   tasks:
     - shell: ip  a s eth0 | grep "inet " | awk -F '\\.' '{print $7}' |awk -F '\\ ' '{print $1}'
       register: ipaserver_id
+      
+    - debug: msg="{{ ipaserver_id.stdout }}"
 
     - name: Configurando nombre de Servidor IPA
       hostname:
