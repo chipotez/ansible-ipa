@@ -18,6 +18,8 @@
         name: "{{ hostname_s }}{{ ipaserver_id.stdout }}{{ domain_s }}"
       register: hostname_full
       
+    - debug: msg="{{ hostname_full  }}"
+    
     - name: Add IP address of all hosts to all hosts
       lineinfile:
          dest: /etc/hosts
