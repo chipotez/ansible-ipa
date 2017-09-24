@@ -26,7 +26,7 @@
                - ipa-server-dns
              
      - name: Configurando IPA Server.
-       command: "ipa-server-install --ip-address={{ ansible_default_ipv4.address }} -r {{ ipaserver_realm }} -n {{ ipaserver_domain }} -p {{ ipaserver_dir_admin_password }} -a {{ ipaserver_admin_password }} --allow-zone-overlap --no-host-dns --mkhomedir --setup-dns --auto-forwarders --hostname={{ ipaserver_id.stdout }} --reverse-zone=0.168.192.in-addr.arpa. --subject={{ ipaserver_subject }} -U"
+       command: "ipa-server-install --ip-address={{ ansible_default_ipv4.address }} -r {{ ipaserver_realm }} -n {{ ipaserver_domain }} -p {{ ipaserver_dir_admin_password }} -a {{ ipaserver_admin_password }} --allow-zone-overlap --no-host-dns --mkhomedir --setup-dns --auto-forwarders --hostname={{ hostname_full.name }} --reverse-zone=0.168.192.in-addr.arpa. --subject={{ ipaserver_subject }} -U"
        
      - name: Habilitando puertos en Firewall
        firewalld: port={{ item }} permanent=true state=enabled
